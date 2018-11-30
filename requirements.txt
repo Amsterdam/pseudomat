@@ -1,0 +1,6 @@
+Django==2.0
+djangorestframework
+markdown
+django-filter
+psycopg2-binary
+mozilla-django-oidc
