@@ -3,9 +3,19 @@ version: '3'
 services:
   db:
     image: postgres
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
   web:
     build: .
-    command: python3 manage.py runserver 0.0.0.0:8000
+    environment:
+      - OIDC_RP_CLIENT_ID=${OIDC_RP_CLIENT_ID}
+      - OIDC_RP_CLIENT_SECRET=${OIDC_RP_CLIENT_SECRET}
+      - OIDC_OP_AUTHORIZATION_ENDPOINT=${OIDC_OP_AUTHORIZATION_ENDPOINT}
+      - OIDC_OP_TOKEN_ENDPOINT=${OIDC_OP_TOKEN_ENDPOINT}
+      - OIDC_OP_USER_ENDPOINT=${OIDC_OP_USER_ENDPOINT}
+      - OIDC_OP_JWKS_ENDPOINT=${OIDC_OP_JWKS_ENDPOINT}
+    # command: python3 manage.py runserver 0.0.0.0:8000
+    command: bash -c "sleep 10; ./manage.py migrate; ./manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
