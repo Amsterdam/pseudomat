@@ -1,0 +1,10 @@
+<html>
+  <title>Pseudomat</title>
+  <body>
+    {% if user.is_authenticated %}
+      <p>Current user: {{ user.email }}</p>
+    {% else %}
+      <a href="{% url 'oidc_authentication_init' %}">Login</a>
+    {% endif %}
+  </body>
+</html>
