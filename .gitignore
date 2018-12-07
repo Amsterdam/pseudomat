@@ -1,2 +1,4 @@
-.venv
+/postgres-data
+
+# Python volatile artifacts:
 __pycache__
