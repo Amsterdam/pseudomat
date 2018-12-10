@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.template import loader
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 
 from pseudomat.models import Project
 from pseudomat.serializers import UserSerializer, GroupSerializer, ProjectSerializer
@@ -16,7 +16,7 @@ class LoggedInMixin(object):
         return super(LoggedInMixin, self).dispatch(*args, **kwargs)
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(LoggedInMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
@@ -24,7 +24,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-class GroupViewSet(viewsets.ModelViewSet):
+class GroupViewSet(LoggedInMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
@@ -38,6 +38,15 @@ class ProjectViewSet(LoggedInMixin, viewsets.ModelViewSet):
     """
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+
+
+class UserProjects(LoggedInMixin, generics.ListAPIView):
+
+    serializer_class = ProjectSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Project.objects.filter(users=user)
 
 
 def index(request):

@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+
 from pseudomat import views
 
 router = routers.DefaultRouter()
@@ -28,5 +29,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('oidc/', include('mozilla_django_oidc.urls')),
-    path('index', views.index)
+    path('index', views.index),
+    path('projecten', views.UserProjects.as_view())
 ]
