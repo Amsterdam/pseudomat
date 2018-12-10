@@ -7,7 +7,7 @@ Create a project, provide and pseudonymize data files for research. Substitute p
 Currently the project consists of a Django app with REST API for managing projects and users, and a file pseudonymize.py which does the actual pseudonymization of a data file. These two are not yet linked together. There is also a command line interface to do the pseudonymization, cli.py.
 
 ## OIDC authentication
-The Django app authenticates a user against a configured OpenId Connect provider (OP). Provide the configuration for the OP as environt variables. An example is given in env_example.sh 
+The Django app authenticates a user against a configured OpenId Connect provider (OP). Provide the configuration for the OP as environment variables. An example is given in env_example.sh 
 
 ## Installation for local development
 Add your configuration for the OP in a file env.sh in the root of your project. See env_example.sh for an example. Then:
@@ -20,4 +20,10 @@ source env.sh
 docker-compose up
 ```
 
-This will fire up a web container with the Django app and a database container running Postgres. The Django app should then be running on 127.0.0.1:8000
+This will fire up a web container with the Django app and a database container running Postgres. The Django app should now be running on 127.0.0.1:8000
+
+The first time you will have to apply some Django migrations for the project to run properly. For this, get the id of the running web container and:
+
+```
+docker exec -it <ContainerId> python ./manage.py migrate
+```
