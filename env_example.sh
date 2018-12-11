@@ -12,3 +12,4 @@ export OIDC_OP_AUTHORIZATION_ENDPOINT='https://acc.iam.amsterdam.nl/auth/realms/
 export OIDC_OP_TOKEN_ENDPOINT='https://acc.iam.amsterdam.nl/auth/realms/datapunt/protocol/openid-connect/token'
 export OIDC_OP_USER_ENDPOINT='https://acc.iam.amsterdam.nl/auth/realms/datapunt/protocol/openid-connect/userinfo'
 export OIDC_OP_JWKS_ENDPOINT='https://acc.iam.amsterdam.nl/auth/realms/datapunt/protocol/openid-connect/certs'
+export OIDC_OP_LOGOUT_ENDPOINT='https://acc.iam.amsterdam.nl/auth/realms/datapunt/protocol/openid-connect/logout'

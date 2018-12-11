@@ -3,6 +3,8 @@ from django.contrib.auth.models import User, Group
 from django.template import loader
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.shortcuts import render
+from django.template import RequestContext
 from rest_framework import viewsets, generics
 
 from pseudomat.models import Project
@@ -50,5 +52,13 @@ class UserProjects(LoggedInMixin, generics.ListAPIView):
 
 
 def index(request):
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render())
+    user = request.user
+    projects = []
+    if user.is_authenticated:
+        projects = Project.objects.filter(users=user)
+
+    context = {
+        'user': user,
+        'projects': projects,
+    }
+    return render(request, 'index.html', context)
