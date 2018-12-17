@@ -8,6 +8,19 @@
     </head>
 
     <body>
-    {% block content %}{% endblock content %}
+        <div class="container">
+            <nav class="navbar navbar-light bg-light">
+                <a class="navbar-brand" href="/">Pseudomat</a>
+                {% if user.is_authenticated %}
+                    Logged in as user: {{ user.email }}
+                    <form method="POST" action="{% url 'oidc_logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Log out</button>
+                    </form>
+                {% endif %}
+            </nav>
+            <br>
+            {% block content %}{% endblock content %}
+        </div>
     </body>
 </html>

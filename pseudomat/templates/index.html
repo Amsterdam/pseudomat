@@ -1,27 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container">
-        <h1>Pseudomat</h1>
-        <p>
-        {% if user.is_authenticated %}
-            <p>
-            Logged in as user: {{ user.email }}
-            </p>
-            
-            <h4>Projecten:</h4>
-            <ul>
-            {% for project in projects %}
-                <li><a href="">{{ project }}</a></li>
-            {% endfor %}
-            </ul>
-            
-            <form method="POST" action="{% url 'oidc_logout' %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Log out</button>
-            </form>
-        {% else %}
-          <a href="{% url 'oidc_authentication_init' %}">Login</a>
-        {% endif %}
-    </div>
+
+{% if user.is_authenticated %}
+    <h4>Projecten:</h4>
+    <ul>
+    {% for project in projects %}
+        <li><a href="/projects/{{ project.id }}">{{ project }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+  <a href="{% url 'oidc_authentication_init' %}">Login</a>
+{% endif %}
 {% endblock content %}
