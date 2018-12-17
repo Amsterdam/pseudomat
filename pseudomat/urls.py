@@ -20,14 +20,13 @@ from rest_framework import routers
 from pseudomat import views
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
-router.register(r'projects', views.ProjectViewSet)
+router.register(r'users', views.UserViewSet, 'user')
+router.register(r'projects', views.ProjectViewSet, 'project')
 
 urlpatterns = [
     path('', views.index),
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    path('api/v1/', include(router.urls)),
     path('oidc/', include('mozilla_django_oidc.urls')),
-    path('projecten', views.UserProjects.as_view())
+    path('projects/<int:project_id>', views.project)
 ]

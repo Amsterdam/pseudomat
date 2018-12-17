@@ -1,14 +1,14 @@
 from django.http import HttpResponse
-from django.contrib.auth.models import User, Group
 from django.template import loader
+from django.shortcuts import render
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.shortcuts import render
-from django.template import RequestContext
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets, generics
 
 from pseudomat.models import Project
-from pseudomat.serializers import UserSerializer, GroupSerializer, ProjectSerializer
+from pseudomat.serializers import UserSerializer, ProjectSerializer
 
 
 class LoggedInMixin(object):
@@ -25,14 +25,12 @@ class UserViewSet(LoggedInMixin, viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
-
-class GroupViewSet(LoggedInMixin, viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return User.objects.all()
+        else:
+            return User.objects.filter(id=user.id)
 
 class ProjectViewSet(LoggedInMixin, viewsets.ModelViewSet):
     """
@@ -41,24 +39,39 @@ class ProjectViewSet(LoggedInMixin, viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
-
-class UserProjects(LoggedInMixin, generics.ListAPIView):
-
-    serializer_class = ProjectSerializer
-
     def get_queryset(self):
         user = self.request.user
-        return Project.objects.filter(users=user)
+        if user.is_superuser:
+            return Project.objects.all()
+        else:
+            return Project.objects.filter(users=user)
 
 
 def index(request):
     user = request.user
-    projects = []
     if user.is_authenticated:
         projects = Project.objects.filter(users=user)
+    else:
+        projects = []
 
     context = {
         'user': user,
         'projects': projects,
     }
     return render(request, 'index.html', context)
+
+
+@login_required(login_url='/')
+def project(request, project_id):
+    user = request.user
+    try:
+        project = Project.objects.filter(users=user).filter(id=project_id)[:1].get()
+    except ObjectDoesNotExist:
+        return HttpResponse('Project does not exist or you are not allowed to view it', 404)
+
+    context = {
+        'user': user,
+        'project': project
+    }
+    return render(request, 'project.html', context)
+
