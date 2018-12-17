@@ -19,5 +19,5 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Project
-        fields = ('url', 'name', 'users')
+        fields = ('url', 'name', 'users', 'vao_ip', 'upload_dir')
         depth = 0
