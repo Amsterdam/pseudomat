@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h4>Projectoverzicht</h4>
+        <table>
+            <tr><td>Naam:</td><td>{{ project.name }}</td></tr>
+            <tr><td>Upload directory:</td><td>{{ project.upload_dir }}</td></tr>
+            <tr><td>VAO ip:</td><td>{{ project.vao_ip }}</td></tr>
+            <tr><td>Secret salt:</td><td>{{ secret }}</td></tr>
+        </table>
+    </div>
+{% endblock content %}
