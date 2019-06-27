@@ -12,6 +12,7 @@
 import os
 import sphinx_rtd_theme
 import urllib.request
+import urllib.error
 #import sys
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -44,9 +45,9 @@ source_suffix = '.rst'
 master_doc='index'
 
 # General information about the project.
-project = 'datacatalog-core'
+project = 'pseudomat'
 # noinspection PyShadowingBuiltins
-copyright = '2018, Gemeente Amsterdam'
+copyright = '2018–2019, Gemeente Amsterdam'
 author = 'Amsterdam City Data'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -54,7 +55,7 @@ author = 'Amsterdam City Data'
 # built documents.
 #
 # The short X.Y version.
-version = '1.1'
+version = '0.1'
 # The full version, including alpha/beta/rc tags.
 release = version
 
@@ -91,7 +92,7 @@ default_role = 'py:obj'
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3.6/', 'python.inv'),
     'sphinx': ('http://www.sphinx-doc.org/en/stable/', 'sphinx.inv'),
-    'aiohttp': ('http://aiohttp.readthedocs.io/en/stable/', 'aiohttp.inv'),
+    #'aiohttp': ('http://aiohttp.readthedocs.io/en/stable/', 'aiohttp.inv'),
 }
 
 # The following code downloads *.inv files from the intersphinx docsets, and
@@ -102,6 +103,7 @@ for inventory in intersphinx_mapping:
             intersphinx_mapping[inventory][0] + 'objects.inv',
             filename=intersphinx_mapping[inventory][1]
         )
+    if not os.path.exists(intersphinx_mapping[inventory][1] + '.txt'):
         os.system(
             """
                 {{

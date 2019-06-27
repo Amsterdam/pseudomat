@@ -3,7 +3,6 @@
 .. toctree::
     :hidden:
 
-    apidoc/datacatalog
     utils
     openapi
     sphinx_101
