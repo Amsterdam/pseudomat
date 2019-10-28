@@ -48,7 +48,7 @@ master_doc='index'
 project = 'pseudomat'
 # noinspection PyShadowingBuiltins
 copyright = '2018–2019, Gemeente Amsterdam'
-author = 'Amsterdam City Data'
+author = 'Amsterdam Data en Informatie'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
